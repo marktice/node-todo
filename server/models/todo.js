@@ -14,7 +14,7 @@ const Todo = mongoose.model('Todo', {
   completedAt: {
     type: Number,
     default: null,
-  }
+  },
 });
 
-module.exports = {Todo};
+module.exports = { Todo };

@@ -1,5 +1,5 @@
 
-const {MongoClient, ObjectID} = require('mongodb');
+const { MongoClient, ObjectID } = require('mongodb');
 
 MongoClient.connect('mongodb://localhost:27017/TodoApp', (err, db) => {
   if (err) {
@@ -17,24 +17,22 @@ MongoClient.connect('mongodb://localhost:27017/TodoApp', (err, db) => {
     returnOriginal: false
   }).then((result) => {
     console.log(result);
-  })
-  
+  });
+
   db.collection('Users').findOneAndUpdate({
     _id: new ObjectID('5b17423d9fcb984d4d039008')
-  }, {    
-      $set: {
-        name: 'Mark'
-      },
-      $inc: {
-        age: 1
-      }
+  }, {
+    $set: {
+      name: 'Mark'
+    },
+    $inc: {
+      age: 1
+    }
   }, {
     returnOriginal: false
   }).then((result) => {
     console.log(result);
-  })
-
-
+  });
 
   // db.close();
 });
