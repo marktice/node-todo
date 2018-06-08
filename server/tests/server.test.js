@@ -4,7 +4,7 @@ const request = require('supertest');
 const { app } = require('./../server');
 const { Todo } = require('./../models/todo');
 
-// make sure db is empty
+// make sure db is empty before every test
 beforeEach((done) => {
   Todo.remove({})
     .then(() => done());
