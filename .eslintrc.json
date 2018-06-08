@@ -10,6 +10,7 @@
         "no-shadow": "off",
         "comma-dangle": "off",
         "arrow-parens": "off",
-        "consistent-return": "off"
+        "consistent-return": "off",
+        "arrow-body-style":"off"
     }
 }
