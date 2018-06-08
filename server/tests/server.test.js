@@ -10,9 +10,8 @@ const todos = [{
   text: 'Second test todo'
 }];
 
-// make sure db is empty before every test
 beforeEach((done) => {
-  Todo.remove({ })
+  Todo.remove({ }) // make sure db is empty
     .then(() => {
       return Todo.insertMany(todos);
     })
@@ -37,9 +36,9 @@ describe('POST /todos', () => {
         if (err) {
           return done(err); // if error end test
         }
-        Todo.find({ text }) // check if todo added to mongoDB, fecth all todos
+        Todo.find({ text }) // check if todo added to mongoDB
           .then((todos) => {
-            expect(todos.length).toBe(1); // will just have one todo since beforeEach removed all
+            expect(todos.length).toBe(1);
             expect(todos[0].text).toBe(text);
             done();
           })
