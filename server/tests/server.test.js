@@ -10,7 +10,9 @@ const todos = [{
   text: 'First test todo'
 }, {
   _id: new ObjectID(),
-  text: 'Second test todo'
+  text: 'Second test todo',
+  completed: true,
+  completedAt: 333
 }];
 
 beforeEach((done) => {
@@ -70,7 +72,7 @@ describe('POST /todos', () => {
   });
 });
 
-describe('GET /todos', (done) => {
+describe('GET /todos', () => {
   it('should get all todos', (done) => {
     request(app)
       .get('/todos')
@@ -160,6 +162,40 @@ describe('DELETE todos/:id', () => {
       .expect(404)
       .expect((res) => {
         expect(res.body).toEqual({});
+      })
+      .end(done);
+  });
+});
+
+describe('PATCH /todos/:id', () => {
+  it('should update the todo', (done) => {
+    const { _id } = todos[1];
+    const updatedValues = { text: 'Updated from test', completed: true };
+
+    request(app)
+      .patch(`/todos/${_id}`)
+      .send(updatedValues)
+      .expect(200)
+      .expect((res) => {
+        expect(res.body.todo.text).toBe(updatedValues.text);
+        expect(res.body.todo.completed).toBe(true);
+        expect(typeof res.body.todo.completedAt).toBe('number');
+      })
+      .end(done);
+  });
+
+  it('should clear completedAt when todo is not completed', (done) => {
+    const { _id } = todos[1];
+    const updatedValues = { text: 'Updated from test', completed: false };
+
+    request(app)
+      .patch(`/todos/${_id}`)
+      .send(updatedValues)
+      .expect(200)
+      .expect((res) => {
+        expect(res.body.todo.text).toBe(updatedValues.text);
+        expect(res.body.todo.completed).toBe(false);
+        expect(res.body.todo.completedAt).toBe(null);
       })
       .end(done);
   });
