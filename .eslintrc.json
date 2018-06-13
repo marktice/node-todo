@@ -11,6 +11,8 @@
         "comma-dangle": "off",
         "arrow-parens": "off",
         "consistent-return": "off",
-        "arrow-body-style":"off"
+        "arrow-body-style":"off",
+        "func-names": "off",
+        "no-underscore-dangle": "off"
     }
 }

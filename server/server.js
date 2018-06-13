@@ -20,39 +20,35 @@ app.post('/todos', (req, res) => {
     text: req.body.text
   });
 
-  todo.save()
-    .then((doc) => {
-      res.send(doc);
-    }).catch((err) => {
-      res.status(400).send(err);
-    });
+  todo.save().then((doc) => {
+    res.send(doc);
+  }).catch((err) => {
+    res.status(400).send(err);
+  });
 });
 
 app.get('/todos', (req, res) => {
-  Todo.find()
-    .then((todos) => {
-      res.send({ todos });
-    }).catch((err) => {
-      res.status(400).send(err);
-    });
+  Todo.find().then((todos) => {
+    res.send({ todos });
+  }).catch((err) => {
+    res.status(400).send(err);
+  });
 });
 
 app.get('/todos/:id', (req, res) => {
   const { id } = req.params; // req.params is an object, w/key we gave(:id) { "id": "123" }
-
   if (!ObjectID.isValid(id)) {
     return res.status(404).send();
   }
-  Todo.findById(id)
-    .then((todo) => {
-      if (!todo) {
-        return res.status(404).send();
-      }
-      res.status(200).send({ todo });
-    })
-    .catch((err) => {
-      res.status(400).send();
-    });
+
+  Todo.findById(id).then((todo) => {
+    if (!todo) {
+      return res.status(404).send();
+    }
+    res.status(200).send({ todo });
+  }).catch((err) => {
+    res.status(400).send();
+  });
 });
 
 app.delete('/todos/:id', (req, res) => {
@@ -60,6 +56,7 @@ app.delete('/todos/:id', (req, res) => {
   if (!ObjectID.isValid(id)) {
     return res.status(404).send();
   }
+
   Todo.findByIdAndRemove(id).then((todo) => {
     if (!todo) {
       return res.status(404).send();
@@ -103,8 +100,10 @@ app.post('/users', (req, res) => {
   const body = _.pick(req.body, ['email', 'password']);
   const user = new User(body);
 
-  user.save().then((user) => {
-    res.status(200).send({ user });
+  user.save().then(() => {
+    return user.generateAuthToken();
+  }).then((token) => {
+    res.header('x-auth', token).send(user);
   }).catch((err) => {
     res.status(400).send({ err });
   });
