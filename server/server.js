@@ -21,19 +21,24 @@ app.post('/todos', (req, res) => {
     text: req.body.text
   });
 
-  todo.save().then((doc) => {
-    res.send(doc);
-  }).catch((err) => {
-    res.status(400).send(err);
-  });
+  todo
+    .save()
+    .then((doc) => {
+      res.send(doc);
+    })
+    .catch((err) => {
+      res.status(400).send(err);
+    });
 });
 
 app.get('/todos', (req, res) => {
-  Todo.find().then((todos) => {
-    res.send({ todos });
-  }).catch((err) => {
-    res.status(400).send(err);
-  });
+  Todo.find()
+    .then((todos) => {
+      res.send({ todos });
+    })
+    .catch((err) => {
+      res.status(400).send(err);
+    });
 });
 
 app.get('/todos/:id', (req, res) => {
@@ -42,14 +47,16 @@ app.get('/todos/:id', (req, res) => {
     return res.status(404).send();
   }
 
-  Todo.findById(id).then((todo) => {
-    if (!todo) {
-      return res.status(404).send();
-    }
-    res.status(200).send({ todo });
-  }).catch((err) => {
-    res.status(400).send();
-  });
+  Todo.findById(id)
+    .then((todo) => {
+      if (!todo) {
+        return res.status(404).send();
+      }
+      res.status(200).send({ todo });
+    })
+    .catch((err) => {
+      res.status(400).send();
+    });
 });
 
 app.delete('/todos/:id', (req, res) => {
@@ -58,20 +65,23 @@ app.delete('/todos/:id', (req, res) => {
     return res.status(404).send();
   }
 
-  Todo.findByIdAndRemove(id).then((todo) => {
-    if (!todo) {
-      return res.status(404).send();
-    }
-    res.status(200).send({ todo });
-  }).catch((err) => {
-    res.status(400).send();
-  });
+  Todo.findByIdAndRemove(id)
+    .then((todo) => {
+      if (!todo) {
+        return res.status(404).send();
+      }
+      res.status(200).send({ todo });
+    })
+    .catch((err) => {
+      res.status(400).send();
+    });
 });
 
 app.patch('/todos/:id', (req, res) => {
   const { id } = req.params;
   // dont want user to update everything used, so just pick of ones we want to update
-  const body = _.pick(req.body, ['text', 'completed']); // pick: takes obj, returns obj w/arguements given
+  const body = _.pick(req.body, ['text', 'completed']);
+  // pick: takes obj, returns obj w/arguements given
 
   if (!ObjectID.isValid(id)) {
     return res.status(404).send();
@@ -91,7 +101,8 @@ app.patch('/todos/:id', (req, res) => {
       }
 
       res.status(200).send({ todo });
-    }).catch((err) => {
+    })
+    .catch((err) => {
       res.status(400).send();
     });
 });
@@ -101,13 +112,18 @@ app.post('/users', (req, res) => {
   const body = _.pick(req.body, ['email', 'password']);
   const user = new User(body);
 
-  user.save().then(() => {
-    return user.generateAuthToken();
-  }).then((token) => {
-    res.header('x-auth', token).send(user);
-  }).catch((err) => {
-    res.status(400).send({ err });
-  });
+  user
+    .save()
+    .then(() => {
+      return user.generateAuthToken();
+    })
+    .then((token) => {
+      // when you prefact a header with: 'x-' is a custom header
+      res.header('x-auth', token).send(user);
+    })
+    .catch((err) => {
+      res.status(400).send({ err });
+    });
 });
 
 app.get('/users/me', authenticate, (req, res) => {
