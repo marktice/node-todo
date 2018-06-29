@@ -13,6 +13,8 @@
     "consistent-return": "off",
     "arrow-body-style": "off",
     "func-names": "off",
-    "no-underscore-dangle": "off"
+    "no-underscore-dangle": "off",
+    "object-curly-newline": "off",
+    "space-before-function-paren": "off"
   }
 }

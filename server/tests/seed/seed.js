@@ -4,7 +4,7 @@ const { ObjectID } = require('mongodb');
 const { Todo } = require('./../../models/todo');
 const { User } = require('./../../models/user');
 
-const userOneId = new ObjectID(); //use again in token so need to declare here
+const userOneId = new ObjectID(); // use again in token so need to declare here
 const userTwoId = new ObjectID();
 const users = [
   {

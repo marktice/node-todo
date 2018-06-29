@@ -126,7 +126,7 @@ app.post('/users', (req, res) => {
 });
 
 app.get('/users/me', authenticate, (req, res) => {
-  res.send(req.user);
+  res.send(req.user); // from authenticated, will send 401 if not
 });
 
 app.post('/users/login', (req, res) => {

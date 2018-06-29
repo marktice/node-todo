@@ -98,7 +98,7 @@ UserSchema.statics.findByCredentials = function(email, password) {
   });
 };
 
-// Before save called
+// Before user.save() called
 UserSchema.pre('save', function(next) {
   const user = this;
 
