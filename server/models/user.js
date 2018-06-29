@@ -37,6 +37,7 @@ const UserSchema = new mongoose.Schema({
   ]
 });
 
+// Instance Methods
 // override a method, dont want to return password and other things
 UserSchema.methods.toJSON = function() {
   const user = this;
@@ -61,6 +62,19 @@ UserSchema.methods.generateAuthToken = function() {
     });
 };
 
+UserSchema.methods.removeToken = function(token) {
+  const user = this;
+  return user.update({
+    $pull: {
+      // pulls token from array
+      tokens: {
+        token
+      }
+    }
+  });
+};
+
+// Model Methods
 UserSchema.statics.findByToken = function(token) {
   const User = this;
   let decoded;
